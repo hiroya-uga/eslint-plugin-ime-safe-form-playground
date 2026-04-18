@@ -1,8 +1,8 @@
-// OK: isComposing ガードあり
+// OK: isComposing + keyCode 229 ガードあり (Safari 対応)
 const input = document.getElementById('a') as HTMLInputElement;
 
 input.addEventListener('keydown', (e: KeyboardEvent) => {
-  if (e.isComposing) return;
+  if (e.isComposing || e.keyCode === 229) return;
   if (e.key === 'Enter') {
     submitForm();
   }

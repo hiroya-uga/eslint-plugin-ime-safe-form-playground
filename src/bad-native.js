@@ -63,4 +63,20 @@ document.getElementById('i').onkeypress = (e) => {
   }
 };
 
+// NG: isComposing ガードはあるが keyCode === 229 がない (Safari 未対応)
+document.getElementById('j').addEventListener('keydown', (e) => {
+  if (e.isComposing) return;
+  if (e.key === 'Enter') {
+    submitForm();
+  }
+});
+
+// NG: keyup でも同様に keyCode === 229 が必要
+document.getElementById('k').addEventListener('keyup', (e) => {
+  if (e.isComposing) return;
+  if (e.key === 'Enter') {
+    submitForm();
+  }
+});
+
 function submitForm() {}

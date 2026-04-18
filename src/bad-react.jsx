@@ -37,6 +37,20 @@ function BadKeyPress() {
   );
 }
 
+// NG: isComposing ガードはあるが keyCode === 229 がない (Safari 未対応)
+function BadKeyDownNoSafari() {
+  return (
+    <input
+      onKeyDown={(e) => {
+        if (e.isComposing) return;
+        if (e.key === 'Enter') {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
 // 注意: 参照渡しのハンドラは静的解析の限界により検出されない
 // eslint-plugin-ime-safe-form の既知の制限
 function UndetectedRef() {
