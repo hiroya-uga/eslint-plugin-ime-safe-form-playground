@@ -25,10 +25,14 @@ npm run lint:good
 
 ```
 src/
-  bad-native.js    # NG: ネイティブ JS（検出されるパターン）
-  good-native.js   # OK: ネイティブ JS（問題なしのパターン）
-  bad-react.jsx    # NG: React / JSX（検出されるパターン）
-  good-react.jsx   # OK: React / JSX（問題なしのパターン）
+  bad-native.js      # NG: ネイティブ JS（検出されるパターン）
+  good-native.js     # OK: ネイティブ JS（問題なしのパターン）
+  bad-react.jsx      # NG: React / JSX（検出されるパターン）
+  good-react.jsx     # OK: React / JSX（問題なしのパターン）
+  bad-ts.ts          # NG: TypeScript（検出されるパターン）
+  good-ts.ts         # OK: TypeScript（問題なしのパターン）
+  bad-react-ts.tsx   # NG: React / TSX（検出されるパターン）
+  good-react-ts.tsx  # OK: React / TSX（問題なしのパターン）
 ```
 
 ## ESLint の設定例
@@ -38,12 +42,27 @@ src/
 ```js
 // eslint.config.js
 import imeSafeForm from 'eslint-plugin-ime-safe-form';
+import tsParser from '@typescript-eslint/parser';
 
 export default [
   imeSafeForm.configs.recommended,
   {
     files: ['**/*.jsx'],
     languageOptions: {
+      parserOptions: {
+        ecmaFeatures: { jsx: true },
+      },
+    },
+  },
+  // TypeScript を使う場合
+  {
+    files: ['**/*.ts'],
+    languageOptions: { parser: tsParser },
+  },
+  {
+    files: ['**/*.tsx'],
+    languageOptions: {
+      parser: tsParser,
       parserOptions: {
         ecmaFeatures: { jsx: true },
       },

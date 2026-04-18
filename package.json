@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "lint": "eslint src/",
-    "lint:bad": "eslint src/bad-*.js src/bad-*.jsx",
-    "lint:good": "eslint src/good-*.js src/good-*.jsx"
+    "lint:bad": "eslint src/bad-*.js src/bad-*.jsx src/bad-*.ts src/bad-*.tsx",
+    "lint:good": "eslint src/good-*.js src/good-*.jsx src/good-*.ts src/good-*.tsx"
   },
   "devDependencies": {
+    "@typescript-eslint/parser": "^8.58.2",
     "eslint": "^9.39.4",
-    "eslint-plugin-ime-safe-form": "^0.1.1"
+    "eslint-plugin-ime-safe-form": "^0.1.1",
+    "typescript": "^6.0.3"
   }
 }
