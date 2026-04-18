@@ -11,7 +11,7 @@
   "devDependencies": {
     "@typescript-eslint/parser": "^8.58.2",
     "eslint": "^9.39.4",
-    "eslint-plugin-ime-safe-form": "^0.1.1",
+    "eslint-plugin-ime-safe-form": "^1.0.0",
     "typescript": "^6.0.3"
   }
 }
