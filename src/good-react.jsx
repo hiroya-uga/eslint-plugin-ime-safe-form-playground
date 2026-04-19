@@ -22,4 +22,49 @@ function GoodFormSubmit() {
   );
 }
 
+// OK: guardFunctions に登録したカスタムガード関数 isImeSafe を使う
+function isImeSafe(e) {
+  return e.isComposing || e.keyCode === 229;
+}
+function GoodCustomGuard() {
+  return (
+    <input
+      onKeyDown={(e) => {
+        if (isImeSafe(e)) return;
+        if (e.key === 'Enter') {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
+// OK: e.which でもガードがあれば OK
+function GoodWhichWithGuard() {
+  return (
+    <input
+      onKeyDown={(e) => {
+        if (e.isComposing || e.keyCode === 229) return;
+        if (e.which === 13) {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
+// OK: textarea でも同様
+function GoodTextarea() {
+  return (
+    <textarea
+      onKeyDown={(e) => {
+        if (e.isComposing || e.keyCode === 229) return;
+        if (e.key === 'Enter' && e.ctrlKey) {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
 function submitForm() {}

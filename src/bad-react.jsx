@@ -63,4 +63,49 @@ function UndetectedRef() {
   return <input onKeyDown={handleKeyDown} />;
 }
 
+// NG: e.which を使っても isComposing ガードなしは NG
+function BadWhich() {
+  return (
+    <input
+      onKeyDown={(e) => {
+        if (e.which === 13) {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
+// NG: switch に e.key を使う
+function BadSwitchKey() {
+  return (
+    <input
+      onKeyDown={(e) => {
+        switch (e.key) {
+          case 'Enter':
+            submitForm();
+            break;
+        }
+      }}
+    />
+  );
+}
+
+// NG: カスタムガード関数が guardFunctions に未登録
+function checkIme(e) {
+  return e.isComposing || e.keyCode === 229;
+}
+function BadUnregisteredGuard() {
+  return (
+    <input
+      onKeyDown={(e) => {
+        if (checkIme(e)) return;
+        if (e.key === 'Enter') {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
 function submitForm() {}

@@ -24,4 +24,35 @@ function GoodFormSubmit() {
   );
 }
 
+// OK: guardFunctions に登録したカスタムガード関数 isImeSafe を使う
+function isImeSafe(e: KeyboardEvent<HTMLInputElement>): boolean {
+  return e.isComposing || e.keyCode === 229;
+}
+function GoodCustomGuard() {
+  return (
+    <input
+      onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+        if (isImeSafe(e)) return;
+        if (e.key === 'Enter') {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
+// OK: e.which でも isComposing + keyCode 229 ガードがあれば OK
+function GoodWhichWithGuard() {
+  return (
+    <input
+      onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.isComposing || e.keyCode === 229) return;
+        if (e.which === 13) {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
 function submitForm(): void {}

@@ -40,4 +40,34 @@ function BadKeyDownNoSafari() {
   );
 }
 
+// NG: e.which を使っても isComposing ガードなしは NG
+function BadWhich() {
+  return (
+    <input
+      onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.which === 13) {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
+// NG: カスタムガード関数が guardFunctions に未登録
+function checkIme(e: KeyboardEvent<HTMLInputElement>): boolean {
+  return e.isComposing || e.keyCode === 229;
+}
+function BadUnregisteredGuard() {
+  return (
+    <input
+      onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+        if (checkIme(e)) return;
+        if (e.key === 'Enter') {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
 function submitForm(): void {}

@@ -79,4 +79,48 @@ document.getElementById('k').addEventListener('keyup', (e) => {
   }
 });
 
+// NG: isComposing ガードなし (e.which)
+document.getElementById('l').addEventListener('keydown', (e) => {
+  if (e.which === 13) {
+    submitForm();
+  }
+});
+
+// NG: switch に e.code を使う
+document.getElementById('m').addEventListener('keydown', (e) => {
+  switch (e.code) {
+    case 'Enter':
+      submitForm();
+      break;
+  }
+});
+
+// NG: switch に e.keyCode を使う
+document.getElementById('n').addEventListener('keydown', (e) => {
+  switch (e.keyCode) {
+    case 13:
+      submitForm();
+      break;
+  }
+});
+
+// NG: カスタムガード関数を使っているが guardFunctions に未登録
+function checkKey(e) {
+  return e.isComposing || e.keyCode === 229;
+}
+document.getElementById('o').addEventListener('keydown', (e) => {
+  if (checkKey(e)) return;
+  if (e.key === 'Enter') {
+    submitForm();
+  }
+});
+
+// NG: isComposing ガードはあるが keyCode === 229 がない (e.which で代替しても不可)
+document.getElementById('p').addEventListener('keydown', (e) => {
+  if (e.isComposing || e.which === 229) return;
+  if (e.key === 'Enter') {
+    submitForm();
+  }
+});
+
 function submitForm() {}

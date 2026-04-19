@@ -35,4 +35,31 @@ input.addEventListener('keydown', (e: KeyboardEvent) => {
   }
 });
 
+// NG: e.which を使っても isComposing ガードなしは NG
+input.addEventListener('keydown', (e: KeyboardEvent) => {
+  if (e.which === 13) {
+    submitForm();
+  }
+});
+
+// NG: switch に e.code を使う
+input.addEventListener('keydown', (e: KeyboardEvent) => {
+  switch (e.code) {
+    case 'Enter':
+      submitForm();
+      break;
+  }
+});
+
+// NG: カスタムガード関数が guardFunctions に未登録
+function checkIme(e: KeyboardEvent): boolean {
+  return e.isComposing || e.keyCode === 229;
+}
+input.addEventListener('keydown', (e: KeyboardEvent) => {
+  if (checkIme(e)) return;
+  if (e.key === 'Enter') {
+    submitForm();
+  }
+});
+
 function submitForm(): void {}
