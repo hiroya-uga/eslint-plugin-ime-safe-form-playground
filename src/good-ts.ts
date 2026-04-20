@@ -34,4 +34,25 @@ input.addEventListener('keydown', (e: KeyboardEvent) => {
   }
 });
 
+// OK: modifier key (ctrlKey) のみでガード — IME 変換中は modifier key は押せないため安全
+input.addEventListener('keydown', (e: KeyboardEvent) => {
+  if (e.key === 'Enter' && e.ctrlKey) {
+    submitForm();
+  }
+});
+
+// OK: modifier key (metaKey) のみでガード
+input.addEventListener('keydown', (e: KeyboardEvent) => {
+  if (e.key === 'Enter' && e.metaKey) {
+    submitForm();
+  }
+});
+
+// OK: ctrlKey または metaKey の組み合わせ (Ctrl+Enter / Cmd+Enter)
+input.addEventListener('keydown', (e: KeyboardEvent) => {
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+    submitForm();
+  }
+});
+
 function submitForm(): void {}

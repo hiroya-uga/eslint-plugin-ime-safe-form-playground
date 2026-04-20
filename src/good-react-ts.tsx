@@ -55,4 +55,43 @@ function GoodWhichWithGuard() {
   );
 }
 
+// OK: modifier key (ctrlKey) のみでガード — IME 変換中は modifier key は押せないため安全
+function GoodModifierCtrl() {
+  return (
+    <input
+      onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && e.ctrlKey) {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
+// OK: modifier key (metaKey) のみでガード
+function GoodModifierMeta() {
+  return (
+    <input
+      onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && e.metaKey) {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
+// OK: ctrlKey または metaKey の組み合わせ (Ctrl+Enter / Cmd+Enter)
+function GoodModifierCtrlOrMeta() {
+  return (
+    <input
+      onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
 function submitForm(): void {}

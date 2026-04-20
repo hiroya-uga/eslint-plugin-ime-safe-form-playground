@@ -65,4 +65,39 @@ document.getElementById('textarea').addEventListener('keydown', (e) => {
   }
 });
 
+// OK: modifier key (ctrlKey) のみでガード — IME 変換中は modifier key は押せないため安全
+document.getElementById('h').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && e.ctrlKey) {
+    submitForm();
+  }
+});
+
+// OK: modifier key (metaKey) のみでガード
+document.getElementById('i').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && e.metaKey) {
+    submitForm();
+  }
+});
+
+// OK: modifier key (shiftKey) のみでガード
+document.getElementById('j').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && e.shiftKey) {
+    submitForm();
+  }
+});
+
+// OK: modifier key (altKey) のみでガード
+document.getElementById('k').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && e.altKey) {
+    submitForm();
+  }
+});
+
+// OK: ctrlKey または metaKey の組み合わせ (Ctrl+Enter / Cmd+Enter)
+document.getElementById('l').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+    submitForm();
+  }
+});
+
 function submitForm() {}
