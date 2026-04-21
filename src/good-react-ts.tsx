@@ -94,4 +94,45 @@ function GoodModifierCtrlOrMeta() {
   );
 }
 
+// OK: allowComponents に登録済みのコンポーネントはチェック対象外 (1.2.0+)
+function GoodAllowedComponent() {
+  return (
+    <SafeInput
+      onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
+// OK: input/textarea/select 以外の通常 HTML 要素は IME 入力不可とみなされる (1.2.0+)
+function GoodDivKeyDown() {
+  return (
+    <div
+      onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Enter') {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
+// OK: contentEditable 要素も isComposing + keyCode 229 ガードがあれば OK (1.2.0+)
+function GoodContentEditable() {
+  return (
+    <div
+      contentEditable
+      onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
+        if (e.isComposing || e.keyCode === 229) return;
+        if (e.key === 'Enter') {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
 function submitForm(): void {}

@@ -12,7 +12,7 @@ export default [
   // 登録した関数が呼ばれていれば IME ガードとして認識される。
   {
     rules: {
-      'ime-safe-form/require-ime-safe-submit': ['warn', { checkKeyCodeForSafari: true, guardFunctions: ['isImeSafe'] }],
+      'ime-safe-form/require-ime-safe-submit': ['warn', { checkKeyCodeForSafari: true, guardFunctions: ['isImeSafe'], allowComponents: ['SafeInput'] }],
     },
   },
   {

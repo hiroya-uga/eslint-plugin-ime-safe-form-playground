@@ -70,4 +70,31 @@ function BadUnregisteredGuard() {
   );
 }
 
+// NG: PascalCase コンポーネントは IME 入力可能とみなされる (allowComponents に未登録) (1.2.0+)
+function BadCustomComponent() {
+  return (
+    <CustomInput
+      onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
+// NG: contentEditable 要素は IME 入力可能とみなされる (1.2.0+)
+function BadContentEditable() {
+  return (
+    <div
+      contentEditable
+      onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Enter') {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
 function submitForm(): void {}
