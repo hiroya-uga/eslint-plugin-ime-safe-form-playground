@@ -123,4 +123,27 @@ document.getElementById('p').addEventListener('keydown', (e) => {
   }
 });
 
+// NG: Enter 以外のキー (Escape) でも isComposing ガードが必要 (1.3.0+)
+document.getElementById('q').addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeDialog();
+  }
+});
+
+// NG: ArrowDown でも同様 (1.3.0+)
+document.getElementById('r').addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowDown') {
+    focusNext();
+  }
+});
+
+// NG: Tab キーも対象 (1.3.0+)
+document.getElementById('s').addEventListener('keyup', (e) => {
+  if (e.code === 'Tab') {
+    focusNext();
+  }
+});
+
 function submitForm() {}
+function closeDialog() {}
+function focusNext() {}

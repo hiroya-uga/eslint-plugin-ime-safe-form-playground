@@ -135,4 +135,18 @@ function BadContentEditable() {
   );
 }
 
+// NG: Enter 以外のキー (Escape) でも isComposing ガードが必要 (1.3.0+)
+function BadEscapeKey() {
+  return (
+    <input
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') {
+          closeDialog();
+        }
+      }}
+    />
+  );
+}
+
 function submitForm() {}
+function closeDialog() {}

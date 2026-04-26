@@ -62,4 +62,20 @@ input.addEventListener('keydown', (e: KeyboardEvent) => {
   }
 });
 
+// NG: Enter 以外のキー (Escape) でも isComposing ガードが必要 (1.3.0+)
+input.addEventListener('keydown', (e: KeyboardEvent) => {
+  if (e.key === 'Escape') {
+    closeDialog();
+  }
+});
+
+// NG: ArrowDown も対象 (1.3.0+)
+input.addEventListener('keyup', (e: KeyboardEvent) => {
+  if (e.key === 'ArrowDown') {
+    focusNext();
+  }
+});
+
 function submitForm(): void {}
+function closeDialog(): void {}
+function focusNext(): void {}

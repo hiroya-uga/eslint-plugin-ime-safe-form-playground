@@ -147,4 +147,19 @@ function GoodContentEditable() {
   );
 }
 
+// OK: Enter 以外のキー (Escape) は isComposing ガードのみで OK (keyCode 229 不要) (1.3.0+)
+function GoodEscapeKey() {
+  return (
+    <input
+      onKeyDown={(e) => {
+        if (e.isComposing) return;
+        if (e.key === 'Escape') {
+          closeDialog();
+        }
+      }}
+    />
+  );
+}
+
 function submitForm() {}
+function closeDialog() {}

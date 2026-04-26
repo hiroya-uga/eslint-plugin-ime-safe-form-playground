@@ -55,4 +55,22 @@ input.addEventListener('keydown', (e: KeyboardEvent) => {
   }
 });
 
+// OK: Enter 以外のキー (Escape) は isComposing ガードのみで OK (keyCode 229 不要) (1.3.0+)
+input.addEventListener('keydown', (e: KeyboardEvent) => {
+  if (e.isComposing) return;
+  if (e.key === 'Escape') {
+    closeDialog();
+  }
+});
+
+// OK: ArrowDown も isComposing + keyCode 229 ガードがあれば OK (1.3.0+)
+input.addEventListener('keydown', (e: KeyboardEvent) => {
+  if (e.isComposing || e.keyCode === 229) return;
+  if (e.key === 'ArrowDown') {
+    focusNext();
+  }
+});
+
 function submitForm(): void {}
+function closeDialog(): void {}
+function focusNext(): void {}

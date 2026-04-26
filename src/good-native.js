@@ -100,4 +100,22 @@ document.getElementById('l').addEventListener('keydown', (e) => {
   }
 });
 
+// OK: Enter 以外のキー (Escape) は isComposing ガードのみで OK (keyCode 229 不要) (1.3.0+)
+document.getElementById('m').addEventListener('keydown', (e) => {
+  if (e.isComposing) return;
+  if (e.key === 'Escape') {
+    closeDialog();
+  }
+});
+
+// OK: ArrowDown も isComposing ガードがあれば OK (1.3.0+)
+document.getElementById('n').addEventListener('keydown', (e) => {
+  if (e.isComposing || e.keyCode === 229) return;
+  if (e.key === 'ArrowDown') {
+    focusNext();
+  }
+});
+
 function submitForm() {}
+function closeDialog() {}
+function focusNext() {}
