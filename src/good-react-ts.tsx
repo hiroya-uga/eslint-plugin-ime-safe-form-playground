@@ -1,11 +1,11 @@
-import type { KeyboardEvent, FormEvent } from 'react';
+import type { KeyboardEvent, FormEvent, ComponentPropsWithoutRef } from 'react';
 
-// OK: isComposing + keyCode 229 ガードあり (Safari 対応)
+/** OK: isComposing + keyCode 229 ガードあり (Safari 対応) */
 function GoodKeyDown() {
   return (
     <input
       onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.isComposing || e.keyCode === 229) return;
+        if (e.nativeEvent.isComposing || e.keyCode === 229) return;
         if (e.key === 'Enter') {
           submitForm();
         }
@@ -14,7 +14,7 @@ function GoodKeyDown() {
   );
 }
 
-// OK: form の onSubmit
+/** OK: form の onSubmit */
 function GoodFormSubmit() {
   return (
     <form onSubmit={(e: FormEvent<HTMLFormElement>) => { e.preventDefault(); submitForm(); }}>
@@ -24,9 +24,9 @@ function GoodFormSubmit() {
   );
 }
 
-// OK: guardFunctions に登録したカスタムガード関数 isImeSafe を使う
+/** guardFunctions に登録したカスタムガード関数 isImeSafe。 */
 function isImeSafe(e: KeyboardEvent<HTMLInputElement>): boolean {
-  return e.isComposing || e.keyCode === 229;
+  return e.nativeEvent.isComposing || e.keyCode === 229;
 }
 function GoodCustomGuard() {
   return (
@@ -41,12 +41,12 @@ function GoodCustomGuard() {
   );
 }
 
-// OK: e.which でも isComposing + keyCode 229 ガードがあれば OK
+/** OK: e.which でも isComposing + keyCode 229 ガードがあれば OK */
 function GoodWhichWithGuard() {
   return (
     <input
       onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.isComposing || e.keyCode === 229) return;
+        if (e.nativeEvent.isComposing || e.keyCode === 229) return;
         if (e.which === 13) {
           submitForm();
         }
@@ -55,7 +55,7 @@ function GoodWhichWithGuard() {
   );
 }
 
-// OK: modifier key (ctrlKey) のみでガード — IME 変換中は modifier key は押せないため安全
+/** OK: modifier key (ctrlKey) のみでガード。 */
 function GoodModifierCtrl() {
   return (
     <input
@@ -68,7 +68,7 @@ function GoodModifierCtrl() {
   );
 }
 
-// OK: modifier key (metaKey) のみでガード
+/** OK: modifier key (metaKey) のみでガード */
 function GoodModifierMeta() {
   return (
     <input
@@ -81,7 +81,7 @@ function GoodModifierMeta() {
   );
 }
 
-// OK: ctrlKey または metaKey の組み合わせ (Ctrl+Enter / Cmd+Enter)
+/** OK: ctrlKey または metaKey の組み合わせ (Ctrl+Enter / Cmd+Enter) */
 function GoodModifierCtrlOrMeta() {
   return (
     <input
@@ -94,7 +94,7 @@ function GoodModifierCtrlOrMeta() {
   );
 }
 
-// OK: allowComponents に登録済みのコンポーネントはチェック対象外 (1.2.0+)
+/** OK: allowComponents に登録済みのコンポーネントはチェック対象外 (1.2.0+) */
 function GoodAllowedComponent() {
   return (
     <SafeInput
@@ -107,7 +107,7 @@ function GoodAllowedComponent() {
   );
 }
 
-// OK: input/textarea/select 以外の通常 HTML 要素は IME 入力不可とみなされる (1.2.0+)
+/** OK: input/textarea/select 以外の通常 HTML 要素は IME 入力不可とみなされる (1.2.0+) */
 function GoodDivKeyDown() {
   return (
     <div
@@ -120,13 +120,13 @@ function GoodDivKeyDown() {
   );
 }
 
-// OK: contentEditable 要素も isComposing + keyCode 229 ガードがあれば OK (1.2.0+)
+/** OK: contentEditable 要素も isComposing + keyCode 229 ガードがあれば OK (1.2.0+) */
 function GoodContentEditable() {
   return (
     <div
       contentEditable
       onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
-        if (e.isComposing || e.keyCode === 229) return;
+        if (e.nativeEvent.isComposing || e.keyCode === 229) return;
         if (e.key === 'Enter') {
           submitForm();
         }
@@ -135,18 +135,26 @@ function GoodContentEditable() {
   );
 }
 
-// OK: Enter 以外のキー (Escape) は isComposing ガードのみで OK (keyCode 229 不要) (1.3.0+)
+/** OK: Enter 以外のキー (Escape) は isComposing ガードのみで OK (1.3.0+) */
 function GoodEscapeKey() {
   return (
     <input
       onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.isComposing) return;
+        if (e.nativeEvent.isComposing) return;
         if (e.key === 'Escape') {
           closeDialog();
         }
       }}
     />
   );
+}
+
+/**
+ * allowComponents のサンプル用に使う最小の input ラッパー。
+ * @param props input 要素へそのまま渡す props。
+ */
+function SafeInput(props: ComponentPropsWithoutRef<'input'>) {
+  return <input {...props} />;
 }
 
 function submitForm(): void {}

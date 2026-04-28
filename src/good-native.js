@@ -1,4 +1,4 @@
-// OK: isComposing + keyCode 229 ガードあり (Safari 対応)
+/** OK: isComposing + keyCode 229 ガードあり (Safari 対応) */
 document.getElementById('a').addEventListener('keydown', (e) => {
   if (e.isComposing || e.keyCode === 229) return;
   if (e.key === 'Enter') {
@@ -6,14 +6,14 @@ document.getElementById('a').addEventListener('keydown', (e) => {
   }
 });
 
-// OK: isComposing を && で使う (Safari 対応)
+/** OK: isComposing を && で使う (Safari 対応) */
 document.getElementById('b').addEventListener('keydown', (e) => {
   if (!e.isComposing && !(e.keyCode === 229) && e.key === 'Enter') {
     submitForm();
   }
 });
 
-// OK: isComposing を外側の if で使う (Safari 対応)
+/** OK: isComposing を外側の if で使う (Safari 対応) */
 document.getElementById('c').addEventListener('keydown', (e) => {
   if (e.isComposing || e.keyCode === 229) return;
   if (e.code === 'Enter') {
@@ -21,13 +21,13 @@ document.getElementById('c').addEventListener('keydown', (e) => {
   }
 });
 
-// OK: form の submit イベントを使う (IME の影響を受けない)
+/** OK: form の submit イベントを使う (IME の影響を受けない) */
 document.getElementById('form').addEventListener('submit', (e) => {
   e.preventDefault();
   submitForm();
 });
 
-// OK: e.which === 13 でも isComposing + keyCode 229 ガードがあれば OK
+/** OK: e.which === 13 でも isComposing + keyCode 229 ガードがあれば OK */
 document.getElementById('e').addEventListener('keydown', (e) => {
   if (e.isComposing || e.keyCode === 229) return;
   if (e.which === 13) {
@@ -35,8 +35,7 @@ document.getElementById('e').addEventListener('keydown', (e) => {
   }
 });
 
-// OK: guardFunctions に登録したカスタムガード関数を使う
-// eslint.config.js で guardFunctions: ['isImeSafe'] を設定済み
+/** guardFunctions に登録したカスタムガード関数 isImeSafe。 */
 function isImeSafe(e) {
   return e.isComposing || e.keyCode === 229;
 }
@@ -47,7 +46,7 @@ document.getElementById('f').addEventListener('keydown', (e) => {
   }
 });
 
-// OK: switch に e.keyCode を使う場合も isComposing + keyCode 229 ガードがあれば OK
+/** OK: switch に e.keyCode を使う場合も isComposing + keyCode 229 ガードがあれば OK */
 document.getElementById('g').addEventListener('keydown', (e) => {
   if (e.isComposing || e.keyCode === 229) return;
   switch (e.keyCode) {
@@ -57,7 +56,7 @@ document.getElementById('g').addEventListener('keydown', (e) => {
   }
 });
 
-// OK: textareaでも同様
+/** OK: textarea でも同様 */
 document.getElementById('textarea').addEventListener('keydown', (e) => {
   if (e.isComposing || e.keyCode === 229) return;
   if (e.key === 'Enter' && e.ctrlKey) {
@@ -65,42 +64,42 @@ document.getElementById('textarea').addEventListener('keydown', (e) => {
   }
 });
 
-// OK: modifier key (ctrlKey) のみでガード — IME 変換中は modifier key は押せないため安全
+/** OK: modifier key (ctrlKey) のみでガード。 */
 document.getElementById('h').addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && e.ctrlKey) {
     submitForm();
   }
 });
 
-// OK: modifier key (metaKey) のみでガード
+/** OK: modifier key (metaKey) のみでガード */
 document.getElementById('i').addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && e.metaKey) {
     submitForm();
   }
 });
 
-// OK: modifier key (shiftKey) のみでガード
+/** OK: modifier key (shiftKey) のみでガード */
 document.getElementById('j').addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && e.shiftKey) {
     submitForm();
   }
 });
 
-// OK: modifier key (altKey) のみでガード
+/** OK: modifier key (altKey) のみでガード */
 document.getElementById('k').addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && e.altKey) {
     submitForm();
   }
 });
 
-// OK: ctrlKey または metaKey の組み合わせ (Ctrl+Enter / Cmd+Enter)
+/** OK: ctrlKey または metaKey の組み合わせ (Ctrl+Enter / Cmd+Enter) */
 document.getElementById('l').addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
     submitForm();
   }
 });
 
-// OK: Enter 以外のキー (Escape) は isComposing ガードのみで OK (keyCode 229 不要) (1.3.0+)
+/** OK: Enter 以外のキー (Escape) は isComposing ガードのみで OK (1.3.0+) */
 document.getElementById('m').addEventListener('keydown', (e) => {
   if (e.isComposing) return;
   if (e.key === 'Escape') {
@@ -108,7 +107,7 @@ document.getElementById('m').addEventListener('keydown', (e) => {
   }
 });
 
-// OK: ArrowDown も isComposing ガードがあれば OK (1.3.0+)
+/** OK: ArrowDown も isComposing ガードがあれば OK (1.3.0+) */
 document.getElementById('n').addEventListener('keydown', (e) => {
   if (e.isComposing || e.keyCode === 229) return;
   if (e.key === 'ArrowDown') {

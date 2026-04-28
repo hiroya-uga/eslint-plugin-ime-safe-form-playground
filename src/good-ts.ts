@@ -1,4 +1,4 @@
-// OK: isComposing + keyCode 229 ガードあり (Safari 対応)
+/** OK: isComposing + keyCode 229 ガードあり (Safari 対応) */
 const input = document.getElementById('a') as HTMLInputElement;
 
 input.addEventListener('keydown', (e: KeyboardEvent) => {
@@ -8,14 +8,14 @@ input.addEventListener('keydown', (e: KeyboardEvent) => {
   }
 });
 
-// OK: form の submit イベント
+/** OK: form の submit イベント */
 const form = document.getElementById('form') as HTMLFormElement;
 form.addEventListener('submit', (e: SubmitEvent) => {
   e.preventDefault();
   submitForm();
 });
 
-// OK: guardFunctions に登録したカスタムガード関数 isImeSafe を使う
+/** guardFunctions に登録したカスタムガード関数 isImeSafe。 */
 function isImeSafe(e: KeyboardEvent): boolean {
   return e.isComposing || e.keyCode === 229;
 }
@@ -26,7 +26,7 @@ input.addEventListener('keydown', (e: KeyboardEvent) => {
   }
 });
 
-// OK: e.which でも isComposing + keyCode 229 ガードがあれば OK
+/** OK: e.which でも isComposing + keyCode 229 ガードがあれば OK */
 input.addEventListener('keydown', (e: KeyboardEvent) => {
   if (e.isComposing || e.keyCode === 229) return;
   if (e.which === 13) {
@@ -34,28 +34,28 @@ input.addEventListener('keydown', (e: KeyboardEvent) => {
   }
 });
 
-// OK: modifier key (ctrlKey) のみでガード — IME 変換中は modifier key は押せないため安全
+/** OK: modifier key (ctrlKey) のみでガード。 */
 input.addEventListener('keydown', (e: KeyboardEvent) => {
   if (e.key === 'Enter' && e.ctrlKey) {
     submitForm();
   }
 });
 
-// OK: modifier key (metaKey) のみでガード
+/** OK: modifier key (metaKey) のみでガード */
 input.addEventListener('keydown', (e: KeyboardEvent) => {
   if (e.key === 'Enter' && e.metaKey) {
     submitForm();
   }
 });
 
-// OK: ctrlKey または metaKey の組み合わせ (Ctrl+Enter / Cmd+Enter)
+/** OK: ctrlKey または metaKey の組み合わせ (Ctrl+Enter / Cmd+Enter) */
 input.addEventListener('keydown', (e: KeyboardEvent) => {
   if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
     submitForm();
   }
 });
 
-// OK: Enter 以外のキー (Escape) は isComposing ガードのみで OK (keyCode 229 不要) (1.3.0+)
+/** OK: Enter 以外のキー (Escape) は isComposing ガードのみで OK (1.3.0+) */
 input.addEventListener('keydown', (e: KeyboardEvent) => {
   if (e.isComposing) return;
   if (e.key === 'Escape') {
@@ -63,7 +63,7 @@ input.addEventListener('keydown', (e: KeyboardEvent) => {
   }
 });
 
-// OK: ArrowDown も isComposing + keyCode 229 ガードがあれば OK (1.3.0+)
+/** OK: ArrowDown も isComposing + keyCode 229 ガードがあれば OK (1.3.0+) */
 input.addEventListener('keydown', (e: KeyboardEvent) => {
   if (e.isComposing || e.keyCode === 229) return;
   if (e.key === 'ArrowDown') {
@@ -74,3 +74,5 @@ input.addEventListener('keydown', (e: KeyboardEvent) => {
 function submitForm(): void {}
 function closeDialog(): void {}
 function focusNext(): void {}
+
+export {};

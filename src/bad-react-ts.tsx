@@ -1,6 +1,6 @@
-import type { KeyboardEvent } from 'react';
+import type { KeyboardEvent, ComponentPropsWithoutRef } from 'react';
 
-// NG: isComposing ガードなし
+/** NG: isComposing ガードなし */
 function BadKeyDown() {
   return (
     <input
@@ -13,7 +13,7 @@ function BadKeyDown() {
   );
 }
 
-// NG: onKeyPress (deprecated)
+/** NG: onKeyPress (deprecated) */
 function BadKeyPress() {
   return (
     <input
@@ -26,12 +26,12 @@ function BadKeyPress() {
   );
 }
 
-// NG: isComposing ガードはあるが keyCode === 229 がない (Safari 未対応)
+/** NG: isComposing ガードはあるが keyCode === 229 がない (Safari 未対応) */
 function BadKeyDownNoSafari() {
   return (
     <input
       onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
-        if (e.isComposing) return;
+        if (e.nativeEvent.isComposing) return;
         if (e.key === 'Enter') {
           submitForm();
         }
@@ -40,7 +40,7 @@ function BadKeyDownNoSafari() {
   );
 }
 
-// NG: e.which を使っても isComposing ガードなしは NG
+/** NG: e.which を使っても isComposing ガードなしは NG */
 function BadWhich() {
   return (
     <input
@@ -53,9 +53,9 @@ function BadWhich() {
   );
 }
 
-// NG: カスタムガード関数が guardFunctions に未登録
+/** guardFunctions に未登録のカスタムガード関数。 */
 function checkIme(e: KeyboardEvent<HTMLInputElement>): boolean {
-  return e.isComposing || e.keyCode === 229;
+  return e.nativeEvent.isComposing || e.keyCode === 229;
 }
 function BadUnregisteredGuard() {
   return (
@@ -70,7 +70,7 @@ function BadUnregisteredGuard() {
   );
 }
 
-// NG: PascalCase コンポーネントは IME 入力可能とみなされる (allowComponents に未登録) (1.2.0+)
+/** NG: PascalCase コンポーネントは IME 入力可能とみなされる (allowComponents に未登録) (1.2.0+) */
 function BadCustomComponent() {
   return (
     <CustomInput
@@ -83,7 +83,7 @@ function BadCustomComponent() {
   );
 }
 
-// NG: contentEditable 要素は IME 入力可能とみなされる (1.2.0+)
+/** NG: contentEditable 要素は IME 入力可能とみなされる (1.2.0+) */
 function BadContentEditable() {
   return (
     <div
@@ -97,7 +97,7 @@ function BadContentEditable() {
   );
 }
 
-// NG: Enter 以外のキー (Escape) でも isComposing ガードが必要 (1.3.0+)
+/** NG: Enter 以外のキー (Escape) でも isComposing ガードが必要 (1.3.0+) */
 function BadEscapeKey() {
   return (
     <input
@@ -108,6 +108,10 @@ function BadEscapeKey() {
       }}
     />
   );
+}
+
+function CustomInput(props: ComponentPropsWithoutRef<'input'>) {
+  return <input {...props} />;
 }
 
 function submitForm(): void {}

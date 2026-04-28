@@ -1,9 +1,11 @@
-// OK: isComposing + keyCode 229 ガードあり (Safari 対応)
+
+
+/** OK: isComposing + keyCode 229 ガードあり (Safari 対応) */
 function GoodKeyDown() {
   return (
     <input
       onKeyDown={(e) => {
-        if (e.isComposing || e.keyCode === 229) return;
+        if (e.nativeEvent.isComposing || e.keyCode === 229) return;
         if (e.key === 'Enter') {
           submitForm();
         }
@@ -12,7 +14,7 @@ function GoodKeyDown() {
   );
 }
 
-// OK: form の onSubmit を使う (IME の影響を受けない)
+/** OK: form の onSubmit を使う (IME の影響を受けない) */
 function GoodFormSubmit() {
   return (
     <form onSubmit={(e) => { e.preventDefault(); submitForm(); }}>
@@ -22,9 +24,14 @@ function GoodFormSubmit() {
   );
 }
 
-// OK: guardFunctions に登録したカスタムガード関数 isImeSafe を使う
+/** guardFunctions に登録したカスタムガード関数 isImeSafe。 */
+/**
+ * guardFunctions に登録したカスタムガード関数 isImeSafe。
+ * @param {import('react').KeyboardEvent<HTMLInputElement>} e キーボードイベント。
+ * @returns {boolean} IME 変換中または Safari 互換ガードが必要な場合は true。
+ */
 function isImeSafe(e) {
-  return e.isComposing || e.keyCode === 229;
+  return e.nativeEvent.isComposing || e.keyCode === 229;
 }
 function GoodCustomGuard() {
   return (
@@ -39,12 +46,12 @@ function GoodCustomGuard() {
   );
 }
 
-// OK: e.which でもガードがあれば OK
+/** OK: e.which でもガードがあれば OK */
 function GoodWhichWithGuard() {
   return (
     <input
       onKeyDown={(e) => {
-        if (e.isComposing || e.keyCode === 229) return;
+        if (e.nativeEvent.isComposing || e.keyCode === 229) return;
         if (e.which === 13) {
           submitForm();
         }
@@ -53,12 +60,12 @@ function GoodWhichWithGuard() {
   );
 }
 
-// OK: textarea でも同様
+/** OK: textarea でも同様 */
 function GoodTextarea() {
   return (
     <textarea
       onKeyDown={(e) => {
-        if (e.isComposing || e.keyCode === 229) return;
+        if (e.nativeEvent.isComposing || e.keyCode === 229) return;
         if (e.key === 'Enter' && e.ctrlKey) {
           submitForm();
         }
@@ -67,7 +74,7 @@ function GoodTextarea() {
   );
 }
 
-// OK: modifier key (ctrlKey) のみでガード — IME 変換中は modifier key は押せないため安全
+/** OK: modifier key (ctrlKey) のみでガード。 */
 function GoodModifierCtrl() {
   return (
     <input
@@ -80,7 +87,7 @@ function GoodModifierCtrl() {
   );
 }
 
-// OK: modifier key (metaKey) のみでガード
+/** OK: modifier key (metaKey) のみでガード */
 function GoodModifierMeta() {
   return (
     <input
@@ -93,7 +100,7 @@ function GoodModifierMeta() {
   );
 }
 
-// OK: ctrlKey または metaKey の組み合わせ (Ctrl+Enter / Cmd+Enter)
+/** OK: ctrlKey または metaKey の組み合わせ (Ctrl+Enter / Cmd+Enter) */
 function GoodModifierCtrlOrMeta() {
   return (
     <input
@@ -106,7 +113,7 @@ function GoodModifierCtrlOrMeta() {
   );
 }
 
-// OK: allowComponents に登録済みのコンポーネントはチェック対象外 (1.2.0+)
+/** OK: allowComponents に登録済みのコンポーネントはチェック対象外 (1.2.0+) */
 function GoodAllowedComponent() {
   return (
     <SafeInput
@@ -119,7 +126,7 @@ function GoodAllowedComponent() {
   );
 }
 
-// OK: input/textarea/select 以外の通常 HTML 要素は IME 入力不可とみなされる (1.2.0+)
+/** OK: input/textarea/select 以外の通常 HTML 要素は IME 入力不可とみなされる (1.2.0+) */
 function GoodDivKeyDown() {
   return (
     <div
@@ -132,13 +139,13 @@ function GoodDivKeyDown() {
   );
 }
 
-// OK: contentEditable 要素も isComposing + keyCode 229 ガードがあれば OK (1.2.0+)
+/** OK: contentEditable 要素も isComposing + keyCode 229 ガードがあれば OK (1.2.0+) */
 function GoodContentEditable() {
   return (
     <div
       contentEditable
       onKeyDown={(e) => {
-        if (e.isComposing || e.keyCode === 229) return;
+        if (e.nativeEvent.isComposing || e.keyCode === 229) return;
         if (e.key === 'Enter') {
           submitForm();
         }
@@ -147,12 +154,12 @@ function GoodContentEditable() {
   );
 }
 
-// OK: Enter 以外のキー (Escape) は isComposing ガードのみで OK (keyCode 229 不要) (1.3.0+)
+/** OK: Enter 以外のキー (Escape) は isComposing ガードのみで OK (1.3.0+) */
 function GoodEscapeKey() {
   return (
     <input
       onKeyDown={(e) => {
-        if (e.isComposing) return;
+        if (e.nativeEvent.isComposing) return;
         if (e.key === 'Escape') {
           closeDialog();
         }
@@ -160,6 +167,15 @@ function GoodEscapeKey() {
     />
   );
 }
+
+/**
+ * allowComponents のサンプル用に使う最小の input ラッパー。
+ * @param {import('react').ComponentPropsWithoutRef<'input'>} props
+ */
+function SafeInput(props) {
+  return <input {...props} />;
+}
+
 
 function submitForm() {}
 function closeDialog() {}
