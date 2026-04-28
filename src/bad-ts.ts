@@ -76,6 +76,17 @@ input.addEventListener('keyup', (e: KeyboardEvent) => {
   }
 });
 
+/** NG: modifier key 付きの分岐があっても、別分岐の未ガード key check は NG (1.3.1+) */
+input.addEventListener('keydown', (e: KeyboardEvent) => {
+  if (e.ctrlKey) {
+    if (e.key === 'Enter') {
+      submitForm();
+    }
+  } else if (e.key === 'Tab') {
+    focusNext();
+  }
+});
+
 function submitForm(): void {}
 function closeDialog(): void {}
 function focusNext(): void {}

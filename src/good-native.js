@@ -99,11 +99,39 @@ document.getElementById('l').addEventListener('keydown', (e) => {
   }
 });
 
+/** OK: ctrlKey と metaKey の両方を要求するガード。 (1.3.1+) */
+document.getElementById('l2').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && (e.ctrlKey && e.metaKey)) {
+    submitForm();
+  }
+});
+
 /** OK: Enter 以外のキー (Escape) は isComposing ガードのみで OK (1.3.0+) */
 document.getElementById('m').addEventListener('keydown', (e) => {
   if (e.isComposing) return;
   if (e.key === 'Escape') {
     closeDialog();
+  }
+});
+
+/** OK: isComposing ガードと modifier key ガードの組み合わせ。 (1.3.1+) */
+document.getElementById('m2').addEventListener('keydown', (e) => {
+  if (e.isComposing) return;
+  if (e.key === 'Enter' && e.ctrlKey) {
+    submitForm();
+  }
+});
+
+/** OK: すべての key check が modifier key 条件下なら outer if でも OK (1.3.1+) */
+document.getElementById('m3').addEventListener('keydown', (e) => {
+  if (e.ctrlKey) {
+    if (e.key === 'Enter') {
+      submitForm();
+    }
+  } else if (e.altKey) {
+    if (e.key === 'Tab') {
+      focusNext();
+    }
   }
 });
 

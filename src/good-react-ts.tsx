@@ -17,9 +17,14 @@ function GoodKeyDown() {
 /** OK: form の onSubmit */
 function GoodFormSubmit() {
   return (
-    <form onSubmit={(e: FormEvent<HTMLFormElement>) => { e.preventDefault(); submitForm(); }}>
-      <input type="text" />
-      <button type="submit">送信</button>
+    <form
+      onSubmit={(e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        submitForm();
+      }}
+    >
+      <input type='text' />
+      <button type='submit'>送信</button>
     </form>
   );
 }
@@ -94,6 +99,19 @@ function GoodModifierCtrlOrMeta() {
   );
 }
 
+/** OK: ctrlKey と metaKey の両方を要求するガード。 (1.3.1+) */
+function GoodModifierCtrlAndMeta() {
+  return (
+    <input
+      onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && e.ctrlKey && e.metaKey) {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
 /** OK: allowComponents に登録済みのコンポーネントはチェック対象外 (1.2.0+) */
 function GoodAllowedComponent() {
   return (
@@ -107,7 +125,7 @@ function GoodAllowedComponent() {
   );
 }
 
-/** OK: input/textarea/select 以外の通常 HTML 要素は IME 入力不可とみなされる (1.2.0+) */
+/** OK: div のような通常 HTML 要素は IME 入力不可とみなされる (1.2.0+) */
 function GoodDivKeyDown() {
   return (
     <div
@@ -117,6 +135,35 @@ function GoodDivKeyDown() {
         }
       }}
     />
+  );
+}
+
+/** OK: contentEditable={false} は IME 入力可能要素として扱わない。 (1.3.1+) */
+function GoodContentEditableFalse() {
+  return (
+    <div
+      contentEditable={false}
+      onKeyDown={(e: KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Enter') {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
+/** OK: select は IME 入力可能要素として扱わない。 (1.3.1+) */
+function GoodSelectKeyDown() {
+  return (
+    <select
+      onKeyDown={(e: KeyboardEvent<HTMLSelectElement>) => {
+        if (e.key === 'Enter') {
+          submitForm();
+        }
+      }}
+    >
+      <option value='a'>A</option>
+    </select>
   );
 }
 
@@ -149,6 +196,39 @@ function GoodEscapeKey() {
   );
 }
 
+/** OK: isComposing ガードと modifier key ガードの組み合わせ。 (1.3.1+) */
+function GoodIsComposingWithModifier() {
+  return (
+    <input
+      onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.nativeEvent.isComposing) return;
+        if (e.key === 'Enter' && e.ctrlKey) {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
+/** OK: すべての key check が modifier key 条件下なら outer if でも OK (1.3.1+) */
+function GoodNestedModifierGuards() {
+  return (
+    <input
+      onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.ctrlKey) {
+          if (e.key === 'Enter') {
+            submitForm();
+          }
+        } else if (e.altKey) {
+          if (e.key === 'Tab') {
+            focusNext();
+          }
+        }
+      }}
+    />
+  );
+}
+
 /**
  * allowComponents のサンプル用に使う最小の input ラッパー。
  * @param props input 要素へそのまま渡す props。
@@ -159,3 +239,4 @@ function SafeInput(props: ComponentPropsWithoutRef<'input'>) {
 
 function submitForm(): void {}
 function closeDialog(): void {}
+function focusNext(): void {}

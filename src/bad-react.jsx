@@ -147,5 +147,23 @@ function BadEscapeKey() {
   );
 }
 
+/** NG: modifier key 付きの分岐があっても、別分岐の未ガード key check は NG (1.3.1+) */
+function BadMixedModifierGuard() {
+  return (
+    <input
+      onKeyDown={(e) => {
+        if (e.ctrlKey) {
+          if (e.key === 'Enter') {
+            submitForm();
+          }
+        } else if (e.key === 'Tab') {
+          focusNext();
+        }
+      }}
+    />
+  );
+}
+
 function submitForm() {}
 function closeDialog() {}
+function focusNext() {}
