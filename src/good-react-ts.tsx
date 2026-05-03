@@ -229,6 +229,19 @@ function GoodNestedModifierGuards() {
   );
 }
 
+/** OK: ドット記法コンポーネントも jsxComponents.allowComponents に登録済みなら OK (1.4.0+) */
+function GoodDotNotationComponent() {
+  return (
+    <UI.SafeInput
+      onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
 /**
  * allowComponents のサンプル用に使う最小の input ラッパー。
  * @param props input 要素へそのまま渡す props。
@@ -236,6 +249,10 @@ function GoodNestedModifierGuards() {
 function SafeInput(props: ComponentPropsWithoutRef<'input'>) {
   return <input {...props} />;
 }
+
+const UI = {
+  SafeInput: (props: ComponentPropsWithoutRef<'input'>) => <input {...props} />,
+};
 
 function submitForm(): void {}
 function closeDialog(): void {}

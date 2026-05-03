@@ -164,6 +164,36 @@ function BadMixedModifierGuard() {
   );
 }
 
+/** NG: ドット記法コンポーネントは IME 入力可能とみなされる (jsxComponents.allowComponents に未登録) (1.4.0+) */
+function BadDotNotationComponent() {
+  return (
+    <UI.Input
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
+/** NG: customElements.disallowElements に登録したカスタム要素は検査対象 (1.4.0+) */
+function BadCustomElement() {
+  return (
+    <my-input
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          submitForm();
+        }
+      }}
+    />
+  );
+}
+
 function submitForm() {}
 function closeDialog() {}
 function focusNext() {}
+const UI = {
+  Input: (props) => <input {...props} />,
+  SafeInput: (props) => <input {...props} />,
+};
